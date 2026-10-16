@@ -25,7 +25,6 @@ Click "Add to VCC" on the [VPM listing](https://koz39.github.io/vpm-listing/) to
 ## Notes
 
 - This is not an official Modular Avatar tool. Please don't send questions about it to the Modular Avatar developers.
-- For outfits that include hair, use Setup Outfit instead.
 - Objects directly under the Armature other than the Head or Hair bone don't follow the head.
 - Auto-adding colliders is still experimental. Colliders are picked by PhysBone length, so check the result and adjust them yourself if needed. Colliders aren't added to PhysBones that already have them.
 - Only the avatar's existing colliders are used; none are created. Nothing is added for avatars without torso or upper-arm colliders.
