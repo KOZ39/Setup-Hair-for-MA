@@ -1,0 +1,23 @@
+{
+  "buttons": {
+    "OK": "OK"
+  },
+  "formats": {
+    "ListSeparator": ", "
+  },
+  "messages": {
+    "CollidersAdded": "'{0}': added {2} collider(s) to {1} PhysBone(s)." // {0}: hair name, {1}: PhysBone count, {2}: collider count
+  },
+  "warnings": {
+    "NotFollowingHead": "These objects in '{0}' will not follow the head:\n{1}" // {0}: hair name, {1}: object names
+  },
+  "errors": {
+    "NoAvatar": "Skipped '{0}'.\nPlace it inside an avatar with a VRC Avatar Descriptor and a Humanoid Animator.", // {0}: hair name
+    "IsAvatar": "Skipped '{0}'.\nSelect the hair prefab, not the avatar.", // {0}: avatar name
+    "MergeArmatureExists": "Skipped '{0}'.\nMA Merge Armature is already set up, for example by Setup Outfit.", // {0}: hair name
+    "NoArmature": "Skipped '{0}'.\nNo Armature was found. Make sure you selected the hair prefab.", // {0}: hair name
+    "LooksLikeOutfit": "Skipped '{0}'.\nIt looks like an outfit. Use Setup Outfit instead.", // {0}: hair name
+    "NoHeadBone": "Skipped '{0}'.\n'{1}' has no Head or Hair bone directly under it.", // {0}: hair name, {1}: armature name
+    "BoneProxyExists": "Skipped '{0}'.\n'{1}' already has an MA Bone Proxy." // {0}: hair name, {1}: object name
+  }
+}

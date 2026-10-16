@@ -1,0 +1,23 @@
+{
+  "buttons": {
+    "OK": "OK"
+  },
+  "formats": {
+    "ListSeparator": "、"
+  },
+  "messages": {
+    "CollidersAdded": "「{0}」：{1}個のPhysBoneにコライダーを{2}個追加しました。" // {0}：髪型の名前、{1}：PhysBoneの数、{2}：コライダーの数
+  },
+  "warnings": {
+    "NotFollowingHead": "「{0}」の次のオブジェクトは頭に追従しません：\n{1}" // {0}：髪型の名前、{1}：オブジェクト名の一覧
+  },
+  "errors": {
+    "NoAvatar": "「{0}」をスキップしました。\nVRC Avatar DescriptorとHumanoid Animatorがあるアバターの中に配置してください。", // {0}：髪型の名前
+    "IsAvatar": "「{0}」をスキップしました。\nアバターではなく髪型のプレハブを選択してください。", // {0}：アバターの名前
+    "MergeArmatureExists": "「{0}」をスキップしました。\nSetup OutfitなどでMA Merge Armatureがすでに設定されています。", // {0}：髪型の名前
+    "NoArmature": "「{0}」をスキップしました。\nArmatureが見つかりません。髪型のプレハブを選択しているか確認してください。", // {0}：髪型の名前
+    "LooksLikeOutfit": "「{0}」をスキップしました。\n衣装のようです。Setup Outfitを使用してください。", // {0}：髪型の名前
+    "NoHeadBone": "「{0}」をスキップしました。\n「{1}」の直下にHeadまたはHairボーンがありません。", // {0}：髪型の名前、{1}：Armatureの名前
+    "BoneProxyExists": "「{0}」をスキップしました。\n「{1}」にMA Bone Proxyがすでにあります。" // {0}：髪型の名前、{1}：オブジェクト名
+  }
+}

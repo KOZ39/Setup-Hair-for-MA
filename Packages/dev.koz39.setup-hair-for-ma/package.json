@@ -1,0 +1,23 @@
+{
+  "name": "dev.koz39.setup-hair-for-ma",
+  "displayName": "Setup Hair for MA",
+  "description": "An unofficial Modular Avatar menu that attaches hair to VRChat avatars and adds PhysBone colliders.",
+  "version": "0.1.0",
+  "unity": "2022.3",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.0.2"
+  },
+  "vpmDependencies": {
+    "com.vrchat.avatars": ">=3.7.3 <4.0.0",
+    "nadena.dev.modular-avatar": ">=1.17.0 <2.0.0",
+    "nadena.dev.ndmf": ">=1.11.0 <2.0.0"
+  },
+  "author": {
+    "name": "KOZ39",
+    "email": "koz39c@gmail.com",
+    "url": "https://github.com/KOZ39"
+  },
+  "changelogUrl": "https://github.com/KOZ39/Setup-Hair-for-MA/blob/main/CHANGELOG.md",
+  "license": "MIT-0",
+  "licensesUrl": "https://github.com/KOZ39/Setup-Hair-for-MA/blob/main/LICENSE"
+}

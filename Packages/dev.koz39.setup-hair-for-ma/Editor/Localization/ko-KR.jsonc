@@ -1,0 +1,23 @@
+{
+  "buttons": {
+    "OK": "확인"
+  },
+  "formats": {
+    "ListSeparator": ", "
+  },
+  "messages": {
+    "CollidersAdded": "'{0}': PhysBone {1}개에 콜라이더 {2}개를 추가했습니다." // {0}: 헤어 이름, {1}: PhysBone 수, {2}: 콜라이더 수
+  },
+  "warnings": {
+    "NotFollowingHead": "'{0}'의 다음 오브젝트는 머리를 따라가지 않습니다:\n{1}" // {0}: 헤어 이름, {1}: 오브젝트 이름 목록
+  },
+  "errors": {
+    "NoAvatar": "'{0}'을(를) 건너뛰었습니다.\nVRC Avatar Descriptor와 Humanoid Animator가 있는 아바타 안에 넣어 주세요.", // {0}: 헤어 이름
+    "IsAvatar": "'{0}'을(를) 건너뛰었습니다.\n아바타가 아닌 헤어 프리팹을 선택해 주세요.", // {0}: 아바타 이름
+    "MergeArmatureExists": "'{0}'을(를) 건너뛰었습니다.\nSetup Outfit 등으로 MA Merge Armature가 이미 설정되어 있습니다.", // {0}: 헤어 이름
+    "NoArmature": "'{0}'을(를) 건너뛰었습니다.\nArmature를 찾을 수 없습니다. 헤어 프리팹을 선택했는지 확인해 주세요.", // {0}: 헤어 이름
+    "LooksLikeOutfit": "'{0}'을(를) 건너뛰었습니다.\n옷으로 보입니다. Setup Outfit을 사용해 주세요.", // {0}: 헤어 이름
+    "NoHeadBone": "'{0}'을(를) 건너뛰었습니다.\n'{1}' 바로 아래에 Head나 Hair 본이 없습니다.", // {0}: 헤어 이름, {1}: Armature 이름
+    "BoneProxyExists": "'{0}'을(를) 건너뛰었습니다.\n'{1}'에 MA Bone Proxy가 이미 있습니다." // {0}: 헤어 이름, {1}: 오브젝트 이름
+  }
+}
