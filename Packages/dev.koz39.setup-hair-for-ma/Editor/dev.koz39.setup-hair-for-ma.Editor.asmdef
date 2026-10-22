@@ -3,6 +3,7 @@
     "rootNamespace": "KOZ39.SetupHairForMA",
     "references": [
         "nadena.dev.modular-avatar.core",
+        "nadena.dev.modular-avatar.core.editor",
         "nadena.dev.ndmf",
         "nadena.dev.ndmf.runtime"
     ],

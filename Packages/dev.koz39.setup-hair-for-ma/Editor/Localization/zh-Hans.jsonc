@@ -12,12 +12,11 @@
     "NotFollowingHead": "“{0}” 中的以下对象不会跟随头部：\n{1}" // {0}：发型名称，{1}：对象名称列表
   },
   "errors": {
-    "NoAvatar": "已跳过 “{0}”。\n请将其放在带有 VRC Avatar Descriptor 和 Humanoid Animator 的 Avatar 内。", // {0}：发型名称
-    "IsAvatar": "已跳过 “{0}”。\n请选择发型预制体，而不是 Avatar。", // {0}：Avatar 名称
+    "NoAvatar": "已跳过 “{0}”。\n请将其放在带有 VRC Avatar Descriptor 和 Humanoid Animator 的 Avatar 内。", // {0}：发型或服装名称
+    "IsAvatar": "已跳过 “{0}”。\n请选择发型或服装预制体，而不是 Avatar。", // {0}：Avatar 名称
     "MergeArmatureExists": "已跳过 “{0}”。\n已通过 Setup Outfit 等设置了 MA Merge Armature。", // {0}：发型名称
     "NoArmature": "已跳过 “{0}”。\n找不到 Armature。请确认选择的是发型预制体。", // {0}：发型名称
-    "LooksLikeOutfit": "已跳过 “{0}”。\n这似乎是服装，请使用 Setup Outfit。", // {0}：发型名称
     "NoHeadBone": "已跳过 “{0}”。\n“{1}” 的直接子级中没有 Head 或 Hair 骨骼。", // {0}：发型名称，{1}：Armature 名称
-    "BoneProxyExists": "已跳过 “{0}”。\n“{1}” 上已存在 MA Bone Proxy。" // {0}：发型名称，{1}：对象名称
+    "BoneProxyExists": "已跳过 “{0}”。\n对象 “{1}” 上已存在 MA Bone Proxy。" // {0}：发型名称，{1}：对象名称
   }
 }

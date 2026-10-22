@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using nadena.dev.modular_avatar.core;
+using nadena.dev.modular_avatar.core.editor;
 using nadena.dev.ndmf.runtime;
 using UnityEditor;
 using UnityEngine;
@@ -11,11 +12,10 @@ namespace KOZ39.SetupHairForMA
 {
     internal static class SetupHairForMAMenu
     {
-        private const string MenuName = "Setup Hair";
+        private const string MenuName = "Setup Hair or Outfit";
         private const string GameObjectMenuPath = "GameObject/Modular Avatar/" + MenuName;
 
-        // Meant to sit right below Setup Outfit (-1000), but Create Toggle already takes -999, so nothing fits between
-        // them. Equal priorities sort by name, which puts this directly above Setup Outfit instead.
+        // Same as Setup Outfit. Equal priorities sort by name, which puts this directly above it.
         private const int MenuPriority = -1000;
 
         // Not 1, so float error in an unscaled head doesn't turn on Match Scale.
@@ -51,13 +51,12 @@ namespace KOZ39.SetupHairForMA
 
             Undo.IncrementCurrentGroup();
             var undoGroup = Undo.GetCurrentGroup();
-            Undo.SetCurrentGroupName(MenuName);
 
             var messages = new List<string>();
 
             foreach (var target in targets)
             {
-                var message = SetupHair(target);
+                var message = SetupTarget(target);
 
                 if (message == null)
                 {
@@ -68,6 +67,8 @@ namespace KOZ39.SetupHairForMA
                 messages.Add(message);
             }
 
+            // Set after the loop because Setup Outfit renames the group.
+            Undo.SetCurrentGroupName(MenuName);
             Undo.CollapseUndoOperations(undoGroup);
 
             if (messages.Count > 0)
@@ -91,20 +92,33 @@ namespace KOZ39.SetupHairForMA
                 other != target && other.transform.IsChildOf(target.transform)
             );
 
-        private static string SetupHair(GameObject hair)
+        private static string SetupTarget(GameObject target)
         {
-            var (avatar, avatarHead) = FindAvatar(hair);
+            var (avatar, avatarHead) = FindAvatar(target);
 
             if (avatar == null)
             {
-                return Text("errors.NoAvatar", hair.name);
+                return Text("errors.NoAvatar", target.name);
             }
 
-            if (avatar.transform == hair.transform)
+            if (avatar.transform == target.transform)
             {
-                return Text("errors.IsAvatar", hair.name);
+                return Text("errors.IsAvatar", target.name);
             }
 
+            if (!IsOutfit(target))
+            {
+                return SetupHair(target, avatar, avatarHead);
+            }
+
+            // Setup Outfit shows its own error window, so there is no message to collect.
+            SetupOutfit.SetupOutfitUI(target);
+
+            return null;
+        }
+
+        private static string SetupHair(GameObject hair, Animator avatar, Transform avatarHead)
+        {
             if (hair.GetComponentInChildren<ModularAvatarMergeArmature>(true) != null)
             {
                 return Text("errors.MergeArmatureExists", hair.name);
@@ -119,12 +133,6 @@ namespace KOZ39.SetupHairForMA
             }
 
             var bones = Children(armature);
-
-            if (IsOutfit(hair, bones))
-            {
-                return Text("errors.LooksLikeOutfit", hair.name);
-            }
-
             var hairHead = bones.FirstOrDefault(bone =>
                 _headBoneNames.Contains(bone.name, StringComparer.OrdinalIgnoreCase)
             );
@@ -187,9 +195,13 @@ namespace KOZ39.SetupHairForMA
             return head != null ? (animator, head) : default;
         }
 
-        private static bool IsOutfit(GameObject hair, Transform[] bones) =>
-            hair.TryGetComponent<Animator>(out var animator) && animator.isHuman
-            || bones.Any(bone => NameContains(bone, "Hips"));
+        // Looks for Hips one level below each child of the root, as Setup Outfit does, so an armature with another
+        // name still counts.
+        private static bool IsOutfit(GameObject target) =>
+            target.TryGetComponent<Animator>(out var animator) && animator.isHuman
+            || Children(target.transform)
+                .SelectMany(Children)
+                .Any(bone => NameContains(bone, "Hips"));
 
         private static void AttachToHead(Transform hairHead, bool matchScale)
         {
