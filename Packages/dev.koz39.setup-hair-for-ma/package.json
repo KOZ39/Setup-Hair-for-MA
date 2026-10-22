@@ -1,8 +1,8 @@
 {
   "name": "dev.koz39.setup-hair-for-ma",
   "displayName": "Setup Hair for MA",
-  "description": "An unofficial Modular Avatar menu that attaches hair to VRChat avatars and adds PhysBone colliders.",
-  "version": "0.1.0",
+  "description": "An unofficial Modular Avatar menu that sets up hair and outfits on VRChat avatars.",
+  "version": "0.2.0",
   "unity": "2022.3",
   "dependencies": {
     "com.unity.nuget.newtonsoft-json": "3.0.2"
