@@ -2,7 +2,7 @@
 
 English | [한국어](README_KO.md) | [日本語](README_JA.md)
 
-> A tool that sets up hair and outfits on VRChat avatars from a single Modular Avatar menu.
+> An unofficial Modular Avatar menu that sets up hair and outfits on VRChat avatars.
 
 ## Requirements
 

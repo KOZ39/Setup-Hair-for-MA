@@ -2,7 +2,7 @@
 
 [English](README.md) | [한국어](README_KO.md) | 日本語
 
-> Modular Avatarのメニュー1つで、VRChatアバターの髪型と衣装を設定するツールです。
+> VRChatアバターの髪型と衣装を設定する、非公式のModular Avatarメニューです。
 
 ## 動作環境
 

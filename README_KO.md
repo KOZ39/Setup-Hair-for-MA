@@ -2,7 +2,7 @@
 
 [English](README.md) | 한국어 | [日本語](README_JA.md)
 
-> Modular Avatar 메뉴 하나로 VRChat 아바타의 헤어와 의상을 설정하는 도구입니다.
+> VRChat 아바타의 헤어와 의상을 설정하는 비공식 Modular Avatar 메뉴입니다.
 
 ## 요구 사항
 
