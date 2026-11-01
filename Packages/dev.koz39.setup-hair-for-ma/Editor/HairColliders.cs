@@ -10,16 +10,9 @@ namespace KOZ39.SetupHairForMA
 {
     internal static class HairColliders
     {
-        // Creators rarely give colliders to strands this short, such as ears, cheeks and hair ties.
         private const float MinStrandLength = 0.05f;
-
-        // Share of the hip width (between the thigh bones) that counts as the body's center line. A Hips capsule lying
-        // across the pelvis sits on it but can be closer to a thigh than to the hips; thigh colliders sit at least a
-        // fifth of the hip width out.
         private const float CenterLineRatio = 0.15f;
 
-        // The body parts avatar creators collide hair with most; colliders on the head, hands and legs are rare and
-        // easy to get wrong.
         private static readonly HumanBodyBones[] _colliderParts =
         {
             HumanBodyBones.Hips,
@@ -40,8 +33,6 @@ namespace KOZ39.SetupHairForMA
             HumanBodyBones.Head,
         };
 
-        // Each body part runs from its bone to the first of these that exists. Parts are told apart by position because
-        // many avatars put a collider object under the bone above the part it covers.
         private static readonly (HumanBodyBones Part, HumanBodyBones[] Ends)[] _bodyParts =
         {
             (HumanBodyBones.Hips, new[] { HumanBodyBones.Spine }),
@@ -138,7 +129,6 @@ namespace KOZ39.SetupHairForMA
                 .ToArray();
         }
 
-        // Colliders on deeper bones belong to the avatar's own hair, skirt or accessories.
         private static bool MovesWithBody(
             VRCPhysBoneCollider collider,
             HashSet<Transform> humanBones,
@@ -147,8 +137,8 @@ namespace KOZ39.SetupHairForMA
         {
             var target = collider.GetRootTransform();
 
-            // With no Root Transform, or its own object as one, the collider follows whatever its object sits
-            // under.
+            // With no Root Transform, or its own object as one, the collider follows whatever
+            // its object sits under.
             var anchor = target == collider.transform ? target.parent : target;
 
             return humanBones.Contains(target) || humanBones.Contains(anchor) || anchor == armature;
@@ -209,14 +199,11 @@ namespace KOZ39.SetupHairForMA
             {
                 var toAnchor = Vector3.Distance(root, collider.Center);
 
-                // A plane pushes bones to the side it faces, so a strand with any bone behind it would be dragged
-                // through. It's also infinite, so only strands that reach where it was placed count.
                 return strands.Bones.All(bone =>
                         Vector3.Dot(bone - collider.Center, collider.Axis) >= 0f
                     ) && strands.Branches.Any(branch => toAnchor <= branch.Reach);
             }
 
-            // A bone already inside would be pushed out, which changes how the hair rests.
             if (
                 strands.Bones.Any(bone =>
                     HandleUtility.DistancePointLine(bone, collider.Start, collider.End)
@@ -230,14 +217,11 @@ namespace KOZ39.SetupHairForMA
             var nearest = HandleUtility.ProjectPointLine(root, collider.Start, collider.End);
             var distance = Vector3.Distance(root, nearest) - collider.Radius;
 
-            // A strand swings around the way it hangs, so a collider behind that direction is out of its way. Planes
-            // skip this: hair hanging along one, like back hair along the back, is what they are for.
             return strands.Branches.Any(branch =>
                 distance <= branch.Reach && Vector3.Dot(branch.Hang, nearest - root) >= 0f
             );
         }
 
-        // A collider's shape in world space, worked out once instead of for every strand.
         private readonly struct BodyCollider
         {
             internal readonly VRCPhysBoneCollider Collider;
@@ -271,15 +255,10 @@ namespace KOZ39.SetupHairForMA
             }
         }
 
-        // A PhysBone root often splits into strands that hang different ways, so each branch is judged on its own.
         private readonly struct Strands
         {
             internal readonly Vector3 Root;
-
-            // Moving bones of the branches that are kept. Endpoint bones are left out: creators let them rest past a
-            // collider, like long back hair whose tips rest behind a Spine plane.
             internal readonly Vector3[] Bones;
-
             internal readonly (float Reach, Vector3 Hang)[] Branches;
 
             private Strands(Vector3 root, Vector3[] bones, (float Reach, Vector3 Hang)[] branches)
@@ -294,7 +273,6 @@ namespace KOZ39.SetupHairForMA
                 var root = physBone.GetRootTransform();
                 var ignored = physBone.ignoreTransforms.Where(bone => bone != null).ToArray();
 
-                // Bones the PhysBone ignores don't move, so they need no colliders.
                 Transform[] MovingChildren(Transform bone) =>
                     bone.Cast<Transform>().Where(child => !ignored.Any(child.IsChildOf)).ToArray();
 
@@ -311,7 +289,6 @@ namespace KOZ39.SetupHairForMA
 
                 var rootChildren = MovingChildren(root);
 
-                // A root with no child bones still swings its endpoint bone, unless the root is ignored too.
                 var chains =
                     rootChildren.Length > 0 ? rootChildren.Select(child => Chain(child).ToArray())
                     : ignored.Any(root.IsChildOf) ? Array.Empty<Transform[]>()

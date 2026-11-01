@@ -15,7 +15,8 @@ namespace KOZ39.SetupHairForMA
         private const string MenuName = "Setup Hair or Outfit";
         private const string GameObjectMenuPath = "GameObject/Modular Avatar/" + MenuName;
 
-        // Same as Setup Outfit. Equal priorities sort by name, which puts this directly above it.
+        // Same as Setup Outfit.
+        // Equal priorities sort by name, which puts this directly above it.
         private const int MenuPriority = -1000;
 
         // Not 1, so float error in an unscaled head doesn't turn on Match Scale.
@@ -39,7 +40,6 @@ namespace KOZ39.SetupHairForMA
 
             var selected = GetTargets();
 
-            // An avatar selected together with something inside it is skipped without a message.
             var targets = selected
                 .Where(target => !IsAvatarOfOtherTarget(target, selected))
                 .ToArray();
@@ -111,7 +111,6 @@ namespace KOZ39.SetupHairForMA
                 return SetupHair(target, avatar, avatarHead);
             }
 
-            // Setup Outfit shows its own error window, so there is no message to collect.
             SetupOutfit.SetupOutfitUI(target);
 
             return null;
@@ -150,8 +149,9 @@ namespace KOZ39.SetupHairForMA
                 return Text("errors.BoneProxyExists", hair.name, otherProxy.name);
             }
 
-            // Against the avatar root, not the hair: a hair the user scaled to fit keeps that scale, and once Match
-            // Scale has scaled the bone it already matches the head, which would turn Match Scale off on a rerun.
+            // Against the avatar root, not the hair: a hair the user scaled to fit keeps that
+            // scale, and once Match Scale has scaled the bone it already matches the head, which
+            // would turn Match Scale off on a rerun.
             AttachToHead(
                 hairHead,
                 avatarHead.AverageLossyScale() / avatar.transform.AverageLossyScale()
@@ -195,8 +195,8 @@ namespace KOZ39.SetupHairForMA
             return head != null ? (animator, head) : default;
         }
 
-        // Looks for Hips one level below each child of the root, as Setup Outfit does, so an armature with another
-        // name still counts.
+        // Looks for Hips one level below each child of the root, as Setup Outfit does, so an
+        // armature with another name still counts.
         private static bool IsOutfit(GameObject target) =>
             target.TryGetComponent<Animator>(out var animator) && animator.isHuman
             || Children(target.transform)
@@ -205,8 +205,8 @@ namespace KOZ39.SetupHairForMA
 
         private static void AttachToHead(Transform hairHead, bool matchScale)
         {
-            // Not on the armature: Match Scale scales around the proxy's origin, and the armature's origin sits at the
-            // avatar's feet, so the whole hair would sink.
+            // Not on the armature: Match Scale scales around the proxy's origin, and the armature's
+            // origin sits at the avatar's feet, so the whole hair would sink.
             var proxy = hairHead.GetComponent<ModularAvatarBoneProxy>();
 
             if (proxy == null)
@@ -218,7 +218,7 @@ namespace KOZ39.SetupHairForMA
                 Undo.RecordObject(proxy, MenuName);
             }
 
-            // Other modes snap the bone onto the avatar's head bone, which shifts hair that is already in place.
+            // Other modes snap the bone onto the avatar's head, shifting hair already in place.
             proxy.boneReference = HumanBodyBones.Head;
             proxy.subPath = null;
             proxy.attachmentMode = BoneProxyAttachmentMode.AsChildKeepWorldPose;
