@@ -1,5 +1,12 @@
 # 변경 내역
 
+## Unreleased
+
+### Added
+
+- Modular Avatar 우클릭 메뉴
+  - Setup Mesh Settings
+
 ## v0.2.0 (2026-10-22)
 
 ### Changed

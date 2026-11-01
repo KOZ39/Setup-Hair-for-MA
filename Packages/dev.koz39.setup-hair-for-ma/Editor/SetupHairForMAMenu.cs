@@ -12,11 +12,14 @@ namespace KOZ39.SetupHairForMA
 {
     internal static class SetupHairForMAMenu
     {
+        private const string ModularAvatarMenuPath = "GameObject/Modular Avatar/";
         private const string MenuName = "Setup Hair or Outfit";
-        private const string GameObjectMenuPath = "GameObject/Modular Avatar/" + MenuName;
+        private const string MenuPath = ModularAvatarMenuPath + MenuName;
+        private const string MeshSettingsMenuName = "Setup Mesh Settings";
+        private const string MeshSettingsMenuPath = ModularAvatarMenuPath + MeshSettingsMenuName;
 
         // Same as Setup Outfit.
-        // Equal priorities sort by name, which puts this directly above it.
+        // Equal priorities sort by name, which keeps both menus directly above it.
         private const int MenuPriority = -1000;
 
         // Not 1, so float error in an unscaled head doesn't turn on Match Scale.
@@ -24,16 +27,13 @@ namespace KOZ39.SetupHairForMA
 
         private static readonly string[] _headBoneNames = { "Head", "Hair" };
 
-        [MenuItem(GameObjectMenuPath, true, MenuPriority)]
+        [MenuItem(MenuPath, true, MenuPriority)]
         private static bool ValidateSetup() => GetTargets().Length > 0;
 
-        [MenuItem(GameObjectMenuPath, false, MenuPriority)]
+        [MenuItem(MenuPath, false, MenuPriority)]
         private static void Setup(MenuCommand command)
         {
-            var context = command.context as GameObject;
-
-            // With multiple objects selected, Unity invokes the menu once per object.
-            if (context != null && context != Selection.activeGameObject)
+            if (IsRepeatedCall(command))
             {
                 return;
             }
@@ -80,6 +80,40 @@ namespace KOZ39.SetupHairForMA
                 );
             }
         }
+
+        [MenuItem(MeshSettingsMenuPath, true, MenuPriority)]
+        private static bool ValidateSetupMeshSettings() => GetAvatars().Length > 0;
+
+        [MenuItem(MeshSettingsMenuPath, false, MenuPriority)]
+        private static void SetupMeshSettings(MenuCommand command)
+        {
+            if (IsRepeatedCall(command))
+            {
+                return;
+            }
+
+            Undo.IncrementCurrentGroup();
+            var undoGroup = Undo.GetCurrentGroup();
+
+            foreach (var avatar in GetAvatars())
+            {
+                AddMeshSettings(avatar);
+            }
+
+            Undo.SetCurrentGroupName(MeshSettingsMenuName);
+            Undo.CollapseUndoOperations(undoGroup);
+        }
+
+        // With multiple objects selected, Unity invokes the menu once per object.
+        private static bool IsRepeatedCall(MenuCommand command) =>
+            command.context is GameObject context && context != Selection.activeGameObject;
+
+        private static Animator[] GetAvatars() =>
+            GetTargets()
+                .Where(target => RuntimeUtil.IsAvatarRoot(target.transform))
+                .Select(target => FindAvatar(target).Avatar)
+                .Where(avatar => avatar != null)
+                .ToArray();
 
         private static GameObject[] GetTargets() =>
             Selection
@@ -177,9 +211,9 @@ namespace KOZ39.SetupHairForMA
                 );
         }
 
-        private static (Animator Avatar, Transform Head) FindAvatar(GameObject hair)
+        private static (Animator Avatar, Transform Head) FindAvatar(GameObject target)
         {
-            var avatarRoot = RuntimeUtil.FindAvatarInParents(hair.transform);
+            var avatarRoot = RuntimeUtil.FindAvatarInParents(target.transform);
 
             if (avatarRoot == null)
             {
@@ -225,6 +259,39 @@ namespace KOZ39.SetupHairForMA
             proxy.matchScale = matchScale;
 
             PrefabUtility.RecordPrefabInstancePropertyModifications(proxy);
+        }
+
+        private static void AddMeshSettings(Animator avatar)
+        {
+            if (avatar.TryGetComponent<ModularAvatarMeshSettings>(out _))
+            {
+                return;
+            }
+
+            var settings = Undo.AddComponent<ModularAvatarMeshSettings>(avatar.gameObject);
+            var hips = avatar.GetBoneTransform(HumanBodyBones.Hips);
+
+            // Set overrides the avatar's own meshes at build time, so Body's values are kept.
+            var body = Children(avatar.transform)
+                .FirstOrDefault(child =>
+                    child.name.Equals("Body", StringComparison.OrdinalIgnoreCase)
+                )
+                ?.GetComponent<SkinnedMeshRenderer>();
+
+            var probeAnchor = body != null ? body.probeAnchor : null;
+            var rootBone = body != null ? body.rootBone : null;
+
+            settings.InheritProbeAnchor = ModularAvatarMeshSettings.InheritMode.Set;
+            settings.ProbeAnchor = new((probeAnchor != null ? probeAnchor : hips).gameObject);
+            settings.InheritBounds = ModularAvatarMeshSettings.InheritMode.Set;
+            settings.RootBone = new((rootBone != null ? rootBone : hips).gameObject);
+
+            if (rootBone != null)
+            {
+                settings.Bounds = body.localBounds;
+            }
+
+            PrefabUtility.RecordPrefabInstancePropertyModifications(settings);
         }
 
         private static void AddColliders(GameObject hair, Animator avatar)

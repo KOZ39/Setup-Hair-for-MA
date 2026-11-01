@@ -2,7 +2,7 @@
 
 English | [한국어](README_KO.md) | [日本語](README_JA.md)
 
-> An unofficial Modular Avatar menu that sets up hair and outfits on VRChat avatars.
+> Unofficial Modular Avatar menus that set up hair, outfits and MA Mesh Settings on VRChat avatars.
 
 ## Requirements
 
@@ -15,6 +15,8 @@ Click "Add to VCC" on the [VPM listing](https://koz39.github.io/vpm-listing/) to
 
 ## How to Use
 
+### Setup Hair or Outfit
+
 1. Place the hair or outfit prefab inside your avatar.
 2. Right-click the prefab in the Hierarchy and select Modular Avatar > Setup Hair or Outfit.
 3. MA Bone Proxy is added to the Head or Hair bone inside the hair prefab, and the hair follows the avatar's head.
@@ -23,9 +25,17 @@ Click "Add to VCC" on the [VPM listing](https://koz39.github.io/vpm-listing/) to
 4. Outfit prefabs are set up with Modular Avatar's Setup Outfit.
 5. A window lists any hair that can't be set up and any objects that won't follow the head. Outfit errors appear in the Setup Outfit window.
 
+### Setup Mesh Settings
+
+1. Right-click the avatar root in the Hierarchy and select Modular Avatar > Setup Mesh Settings.
+2. MA Mesh Settings is added to the avatar root, with both Anchor Override Mode and Bounds Override Mode set to "Set".
+   - Anchor Override and Root Bone take the values of the Body mesh directly under the avatar root. Hips is used if there is no Body mesh or a value is empty.
+   - Bounds take the Body mesh's value when Root Bone comes from Body, and otherwise keep the default extents of 1.
+   - Avatars that already have MA Mesh Settings are skipped.
+
 ## Notes
 
-- This is an unofficial tool that adds an item to the Modular Avatar right-click menu.
+- This is an unofficial tool that adds items to the Modular Avatar right-click menu.
 - Objects with a Humanoid Animator or a Hips bone directly under the Armature are set up as outfits.
 - Of the objects directly under the Armature, only the Head or Hair bone follows the head.
 - Auto-adding colliders is experimental.

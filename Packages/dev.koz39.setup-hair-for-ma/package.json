@@ -1,7 +1,7 @@
 {
   "name": "dev.koz39.setup-hair-for-ma",
   "displayName": "Setup Hair for MA",
-  "description": "An unofficial Modular Avatar menu that sets up hair and outfits on VRChat avatars.",
+  "description": "Unofficial Modular Avatar menus that set up hair, outfits and MA Mesh Settings on VRChat avatars.",
   "version": "0.2.0",
   "unity": "2022.3",
   "dependencies": {

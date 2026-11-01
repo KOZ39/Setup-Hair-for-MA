@@ -2,7 +2,7 @@
 
 [English](README.md) | 한국어 | [日本語](README_JA.md)
 
-> VRChat 아바타의 헤어와 의상을 설정하는 비공식 Modular Avatar 메뉴입니다.
+> VRChat 아바타의 헤어와 의상, MA Mesh Settings를 설정하는 비공식 Modular Avatar 메뉴입니다.
 
 ## 요구 사항
 
@@ -15,6 +15,8 @@
 
 ## 사용법
 
+### Setup Hair or Outfit
+
 1. 헤어나 의상 프리팹을 아바타 안에 넣습니다.
 2. 하이어라키에서 프리팹을 우클릭하고 Modular Avatar > Setup Hair or Outfit을 선택합니다.
 3. 헤어 프리팹 안의 Head 또는 Hair 본에 MA Bone Proxy가 추가되어 헤어가 아바타의 머리를 따라갑니다.
@@ -22,6 +24,14 @@
    - 헤어 PhysBone에는 닿는 범위의 몸통·위팔 콜라이더가 추가됩니다.
 4. 의상 프리팹은 Modular Avatar의 Setup Outfit으로 설정됩니다.
 5. 설정할 수 없는 헤어나 머리를 따라가지 않는 오브젝트가 있으면 창에 표시됩니다. 의상 오류는 Setup Outfit 창에 표시됩니다.
+
+### Setup Mesh Settings
+
+1. 하이어라키에서 아바타 루트를 우클릭하고 Modular Avatar > Setup Mesh Settings를 선택합니다.
+2. 아바타 루트에 MA Mesh Settings가 추가되고, Anchor Override 모드와 Bounds 설정 모드가 모두 "설정"이 됩니다.
+   - Anchor Override와 루트 본은 아바타 루트 바로 아래 Body 메시의 값을 사용합니다. Body 메시가 없거나 값이 비어 있으면 Hips를 사용합니다.
+   - Bounds는 루트 본을 Body에서 가져오면 Body 메시의 값을 사용하고, 그 외에는 Extents가 1인 기본값을 유지합니다.
+   - MA Mesh Settings가 이미 있는 아바타는 건너뜁니다.
 
 ## 주의 사항
 
