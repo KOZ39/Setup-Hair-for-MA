@@ -191,7 +191,7 @@ namespace KOZ39.SetupHairForMA
                 .ToArray();
         }
 
-        private static bool CanReach(BodyCollider collider, Strands strands)
+        internal static bool CanReach(BodyCollider collider, Strands strands)
         {
             var root = strands.Root;
 
@@ -222,7 +222,7 @@ namespace KOZ39.SetupHairForMA
             );
         }
 
-        private readonly struct BodyCollider
+        internal readonly struct BodyCollider
         {
             internal readonly VRCPhysBoneCollider Collider;
             internal readonly bool IsPlane;
@@ -255,13 +255,13 @@ namespace KOZ39.SetupHairForMA
             }
         }
 
-        private readonly struct Strands
+        internal readonly struct Strands
         {
             internal readonly Vector3 Root;
             internal readonly Vector3[] Bones;
             internal readonly (float Reach, Vector3 Hang)[] Branches;
 
-            private Strands(Vector3 root, Vector3[] bones, (float Reach, Vector3 Hang)[] branches)
+            internal Strands(Vector3 root, Vector3[] bones, (float Reach, Vector3 Hang)[] branches)
             {
                 Root = root;
                 Bones = bones;
