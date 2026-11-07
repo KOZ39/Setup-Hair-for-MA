@@ -232,7 +232,7 @@ namespace KOZ39.SetupHairForMA
         // Looks for Hips one level below each child of the root, as Setup Outfit does, so an
         // armature with another name still counts.
         private static bool IsOutfit(GameObject target) =>
-            target.TryGetComponent<Animator>(out var animator) && animator.isHuman
+            (target.TryGetComponent<Animator>(out var animator) && animator.isHuman)
             || Children(target.transform)
                 .SelectMany(Children)
                 .Any(bone => NameContains(bone, "Hips"));

@@ -91,6 +91,8 @@ namespace KOZ39.SetupHairForMA
             return (physBones, colliders);
         }
 
+        // Some avatars keep their colliders directly under the Armature, so the body part comes
+        // from the nearest body segment rather than the bone a collider follows.
         private static BodyCollider[] FindBodyColliders(Animator avatar, Transform hair)
         {
             var humanBones = Enum.GetValues(typeof(HumanBodyBones))
@@ -195,8 +197,12 @@ namespace KOZ39.SetupHairForMA
         {
             var root = strands.Root;
 
+            // A collider keeps bones out, so one with a bone already inside, or behind it for a
+            // plane, would push the hair out of place.
             if (collider.IsPlane)
             {
+                // Measuring to Center limits a plane to strands near its body part.
+                // With the plane distance, left side hair also gets the right UpperArm plane.
                 var toAnchor = Vector3.Distance(root, collider.Center);
 
                 return strands.Bones.All(bone =>
