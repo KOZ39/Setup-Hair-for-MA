@@ -20,6 +20,7 @@
 1. 髪型または衣装のプレハブをアバターの中に配置します。
 2. ヒエラルキーでプレハブを右クリックし、Modular Avatar > Setup Hair or Outfit を選択します。
 3. 髪型のプレハブ内にあるHeadまたはHairボーンにMA Bone Proxyが追加され、髪型がアバターの頭に追従します。
+   - HeadまたはHairボーンがない場合は、Armature直下にPhysBoneコライダー以外のオブジェクトが1つだけであれば、そのオブジェクトを使用します。
    - NeckまたはHeadボーンを縮小したアバターでは、「スケールを合わせる」が有効になります。
    - 髪型のPhysBoneには、届く範囲の胴体・上腕のコライダーが追加されます。
 4. 衣装のプレハブは、Modular AvatarのSetup Outfitで設定されます。

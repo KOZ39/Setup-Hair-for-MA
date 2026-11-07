@@ -20,6 +20,7 @@
 1. 헤어나 의상 프리팹을 아바타 안에 넣습니다.
 2. 하이어라키에서 프리팹을 우클릭하고 Modular Avatar > Setup Hair or Outfit을 선택합니다.
 3. 헤어 프리팹 안의 Head 또는 Hair 본에 MA Bone Proxy가 추가되어 헤어가 아바타의 머리를 따라갑니다.
+   - Head 또는 Hair 본이 없으면, Armature 바로 아래에 PhysBone 콜라이더를 제외한 오브젝트가 하나뿐일 때 그 오브젝트를 사용합니다.
    - Neck이나 Head 본을 줄인 아바타에서는 "스케일 맞춤"이 활성화됩니다.
    - 헤어 PhysBone에는 닿는 범위의 몸통·위팔 콜라이더가 추가됩니다.
 4. 의상 프리팹은 Modular Avatar의 Setup Outfit으로 설정됩니다.

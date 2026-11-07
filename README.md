@@ -20,6 +20,7 @@ Click "Add to VCC" on the [VPM listing](https://koz39.github.io/vpm-listing/) to
 1. Place the hair or outfit prefab inside your avatar.
 2. Right-click the prefab in the Hierarchy and select Modular Avatar > Setup Hair or Outfit.
 3. MA Bone Proxy is added to the Head or Hair bone inside the hair prefab, and the hair follows the avatar's head.
+   - If there is no Head or Hair bone, the only object directly under the Armature other than PhysBone colliders is used.
    - On avatars with a scaled-down Neck or Head bone, "Match scale" is enabled.
    - The hair's PhysBones get the torso and upper-arm colliders within their reach.
 4. Outfit prefabs are set up with Modular Avatar's Setup Outfit.

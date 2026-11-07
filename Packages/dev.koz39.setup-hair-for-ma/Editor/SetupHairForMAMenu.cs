@@ -6,6 +6,7 @@ using nadena.dev.modular_avatar.core.editor;
 using nadena.dev.ndmf.runtime;
 using UnityEditor;
 using UnityEngine;
+using VRC.SDK3.Dynamics.PhysBone.Components;
 using static KOZ39.SetupHairForMA.SetupHairForMALocalization;
 
 namespace KOZ39.SetupHairForMA
@@ -166,9 +167,10 @@ namespace KOZ39.SetupHairForMA
             }
 
             var bones = Children(armature);
-            var hairHead = bones.FirstOrDefault(bone =>
-                _headBoneNames.Contains(bone.name, StringComparer.OrdinalIgnoreCase)
-            );
+            var colliders = bones
+                .Where(bone => bone.TryGetComponent<VRCPhysBoneCollider>(out _))
+                .ToArray();
+            var hairHead = FindHairHead(bones.Except(colliders).ToArray());
 
             if (hairHead == null)
             {
@@ -236,6 +238,20 @@ namespace KOZ39.SetupHairForMA
             || Children(target.transform)
                 .SelectMany(Children)
                 .Any(bone => NameContains(bone, "Hips"));
+
+        private static Transform FindHairHead(Transform[] bones)
+        {
+            var named = bones.FirstOrDefault(bone =>
+                _headBoneNames.Contains(bone.name, StringComparer.OrdinalIgnoreCase)
+            );
+
+            if (named != null)
+            {
+                return named;
+            }
+
+            return bones.Length == 1 ? bones[0] : null;
+        }
 
         private static void AttachToHead(Transform hairHead, bool matchScale)
         {
