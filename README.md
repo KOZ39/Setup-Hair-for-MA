@@ -24,6 +24,7 @@ Click "Add to VCC" on the [VPM listing](https://koz39.github.io/vpm-listing/) to
    - On avatars with a scaled-down Neck or Head bone, "Match scale" is enabled.
    - The hair's PhysBones get the torso and upper-arm colliders within their reach.
    - PhysBone colliders directly under the Armature follow the avatar's nearest bone.
+   - Hair that already follows the head through MA Bone Proxy on a bone deeper than directly under the Armature keeps that MA Bone Proxy, and only its "Match scale" is enabled as above.
 4. Outfit prefabs are set up with Modular Avatar's Setup Outfit.
 5. A window lists any hair that can't be set up and any objects that won't follow the head. Outfit errors appear in the Setup Outfit window.
 

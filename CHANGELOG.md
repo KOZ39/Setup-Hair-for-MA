@@ -8,6 +8,10 @@
   - Head 또는 Hair 본이 없을 시 PhysBone 콜라이더를 제외한 유일한 오브젝트
   - 가장 가까운 아바타 본을 따라가는 PhysBone 콜라이더
 
+### Fixed
+
+- MA Bone Proxy로 이미 머리를 따라가는 헤어를 Head 또는 Hair 본이 없다며 건너뛰는 문제
+
 ## v0.3.0 (2026-11-02)
 
 ### Added

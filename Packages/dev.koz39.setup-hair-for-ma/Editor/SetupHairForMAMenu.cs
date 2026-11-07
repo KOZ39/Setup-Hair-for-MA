@@ -166,6 +166,39 @@ namespace KOZ39.SetupHairForMA
                 return Text("errors.NoArmature", hair.name);
             }
 
+            // Against the avatar root, not the hair: a hair the user scaled to fit keeps that
+            // scale, and once Match Scale has scaled the bone it already matches the head, which
+            // would turn Match Scale off on a rerun.
+            var matchScale =
+                avatarHead.AverageLossyScale() / avatar.transform.AverageLossyScale()
+                < MatchScaleThreshold;
+            var proxies = hair.GetComponentsInChildren<ModularAvatarBoneProxy>(true);
+
+            // Bone Proxies this menu adds sit directly under the armature, so one elsewhere comes
+            // with the hair and already attaches it.
+            var headProxies = proxies
+                .Where(proxy =>
+                    proxy.boneReference == HumanBodyBones.Head && proxy.transform.parent != armature
+                )
+                .ToArray();
+
+            if (headProxies.Length > 0)
+            {
+                if (matchScale)
+                {
+                    foreach (var proxy in headProxies)
+                    {
+                        Undo.RecordObject(proxy, MenuName);
+                        proxy.matchScale = true;
+                        PrefabUtility.RecordPrefabInstancePropertyModifications(proxy);
+                    }
+                }
+
+                AddColliders(hair, avatar);
+
+                return null;
+            }
+
             var bones = Children(armature);
             var colliders = bones
                 .Where(bone => bone.TryGetComponent<VRCPhysBoneCollider>(out _))
@@ -178,20 +211,12 @@ namespace KOZ39.SetupHairForMA
             }
 
             var attached = colliders.Prepend(hairHead).ToArray();
-            var otherProxy = hair.GetComponentsInChildren<ModularAvatarBoneProxy>(true)
-                .FirstOrDefault(proxy => !attached.Contains(proxy.transform));
+            var otherProxy = proxies.FirstOrDefault(proxy => !attached.Contains(proxy.transform));
 
             if (otherProxy != null)
             {
                 return Text("errors.BoneProxyExists", hair.name, otherProxy.name);
             }
-
-            // Against the avatar root, not the hair: a hair the user scaled to fit keeps that
-            // scale, and once Match Scale has scaled the bone it already matches the head, which
-            // would turn Match Scale off on a rerun.
-            var matchScale =
-                avatarHead.AverageLossyScale() / avatar.transform.AverageLossyScale()
-                < MatchScaleThreshold;
 
             AttachTo(hairHead, HumanBodyBones.Head, matchScale);
 
@@ -205,10 +230,7 @@ namespace KOZ39.SetupHairForMA
                 AttachTo(collider, part, matchScale && part == HumanBodyBones.Head);
             }
 
-            if (SetupHairForMASettings.AutoAddColliders)
-            {
-                AddColliders(hair, avatar);
-            }
+            AddColliders(hair, avatar);
 
             var unattachedNames = bones.Except(attached).Select(bone => bone.name).ToArray();
 
@@ -320,6 +342,11 @@ namespace KOZ39.SetupHairForMA
 
         private static void AddColliders(GameObject hair, Animator avatar)
         {
+            if (!SetupHairForMASettings.AutoAddColliders)
+            {
+                return;
+            }
+
             var (physBones, colliders) = HairColliders.Assign(hair, avatar, MenuName);
 
             if (colliders == 0)

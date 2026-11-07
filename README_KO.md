@@ -24,6 +24,7 @@
    - Neck이나 Head 본을 줄인 아바타에서는 "스케일 맞춤"이 활성화됩니다.
    - 헤어 PhysBone에는 닿는 범위의 몸통·위팔 콜라이더가 추가됩니다.
    - Armature 바로 아래의 PhysBone 콜라이더는 위치가 가장 가까운 아바타 본을 따라갑니다.
+   - Armature 바로 아래보다 안쪽 본의 MA Bone Proxy로 이미 머리를 따라가는 헤어는 그 MA Bone Proxy를 그대로 사용하고, "스케일 맞춤"만 위와 같이 활성화됩니다.
 4. 의상 프리팹은 Modular Avatar의 Setup Outfit으로 설정됩니다.
 5. 설정할 수 없는 헤어나 머리를 따라가지 않는 오브젝트가 있으면 창에 표시됩니다. 의상 오류는 Setup Outfit 창에 표시됩니다.
 
