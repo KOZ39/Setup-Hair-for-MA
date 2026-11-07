@@ -23,6 +23,7 @@ Click "Add to VCC" on the [VPM listing](https://koz39.github.io/vpm-listing/) to
    - If there is no Head or Hair bone, the only object directly under the Armature other than PhysBone colliders is used.
    - On avatars with a scaled-down Neck or Head bone, "Match scale" is enabled.
    - The hair's PhysBones get the torso and upper-arm colliders within their reach.
+   - PhysBone colliders directly under the Armature follow the avatar's nearest bone.
 4. Outfit prefabs are set up with Modular Avatar's Setup Outfit.
 5. A window lists any hair that can't be set up and any objects that won't follow the head. Outfit errors appear in the Setup Outfit window.
 
@@ -38,7 +39,7 @@ Click "Add to VCC" on the [VPM listing](https://koz39.github.io/vpm-listing/) to
 
 - This is an unofficial tool that adds items to the Modular Avatar right-click menu.
 - Objects with a Humanoid Animator or a Hips bone directly under the Armature are set up as outfits.
-- Of the objects directly under the Armature, only the Head or Hair bone follows the head.
+- Of the objects directly under the Armature, only the Head or Hair bone and PhysBone colliders follow the avatar's bones.
 - Auto-adding colliders is experimental.
   - Colliders are picked by PhysBone length, so check the result and adjust them yourself if needed.
   - PhysBones that already have colliders are skipped.

@@ -6,6 +6,7 @@
 
 - 헤어의 Armature 바로 아래에서 MA Bone Proxy를 추가하는 오브젝트
   - Head 또는 Hair 본이 없을 시 PhysBone 콜라이더를 제외한 유일한 오브젝트
+  - 가장 가까운 아바타 본을 따라가는 PhysBone 콜라이더
 
 ## v0.3.0 (2026-11-02)
 

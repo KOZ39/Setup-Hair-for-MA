@@ -39,8 +39,9 @@ namespace KOZ39.SetupHairForMA
             (HumanBodyBones.Spine, new[] { HumanBodyBones.Chest }),
             (HumanBodyBones.Chest, new[] { HumanBodyBones.UpperChest, HumanBodyBones.Neck }),
             (HumanBodyBones.UpperChest, new[] { HumanBodyBones.Neck }),
-            (HumanBodyBones.Neck, new[] { HumanBodyBones.Head }),
+            // Before Neck, so a point above the head, equally near the end of Neck, is Head.
             (HumanBodyBones.Head, Array.Empty<HumanBodyBones>()),
+            (HumanBodyBones.Neck, new[] { HumanBodyBones.Head }),
             (HumanBodyBones.LeftShoulder, new[] { HumanBodyBones.LeftUpperArm }),
             (HumanBodyBones.RightShoulder, new[] { HumanBodyBones.RightUpperArm }),
             (HumanBodyBones.LeftUpperArm, new[] { HumanBodyBones.LeftLowerArm }),
@@ -90,6 +91,11 @@ namespace KOZ39.SetupHairForMA
 
             return (physBones, colliders);
         }
+
+        internal static HumanBodyBones FindBodyPart(
+            Animator avatar,
+            VRCPhysBoneCollider collider
+        ) => FindBodyPart(FindBodySegments(avatar), new BodyCollider(collider).Center);
 
         // Some avatars keep their colliders directly under the Armature, so the body part comes
         // from the nearest body segment rather than the bone a collider follows.

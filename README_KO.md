@@ -23,6 +23,7 @@
    - Head 또는 Hair 본이 없으면, Armature 바로 아래에 PhysBone 콜라이더를 제외한 오브젝트가 하나뿐일 때 그 오브젝트를 사용합니다.
    - Neck이나 Head 본을 줄인 아바타에서는 "스케일 맞춤"이 활성화됩니다.
    - 헤어 PhysBone에는 닿는 범위의 몸통·위팔 콜라이더가 추가됩니다.
+   - Armature 바로 아래의 PhysBone 콜라이더는 위치가 가장 가까운 아바타 본을 따라갑니다.
 4. 의상 프리팹은 Modular Avatar의 Setup Outfit으로 설정됩니다.
 5. 설정할 수 없는 헤어나 머리를 따라가지 않는 오브젝트가 있으면 창에 표시됩니다. 의상 오류는 Setup Outfit 창에 표시됩니다.
 
@@ -38,7 +39,7 @@
 
 - Modular Avatar 우클릭 메뉴에 항목을 추가하는 비공식 도구입니다.
 - Humanoid Animator가 있거나 Armature 바로 아래에 Hips 본이 있는 오브젝트는 의상으로 설정됩니다.
-- Armature 바로 아래의 오브젝트 중 Head 또는 Hair 본만 머리를 따라갑니다.
+- Armature 바로 아래의 오브젝트 중 Head 또는 Hair 본과 PhysBone 콜라이더만 아바타의 본을 따라갑니다.
 - 콜라이더 자동 추가는 실험적인 기능입니다.
   - PhysBone 길이를 기준으로 콜라이더를 고르므로, 결과를 확인하고 필요하면 직접 조정해 주세요.
   - 콜라이더가 이미 지정된 PhysBone은 건너뜁니다.

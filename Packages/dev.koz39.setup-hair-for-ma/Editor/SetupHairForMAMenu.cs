@@ -177,8 +177,9 @@ namespace KOZ39.SetupHairForMA
                 return Text("errors.NoHeadBone", hair.name, armature.name);
             }
 
+            var attached = colliders.Prepend(hairHead).ToArray();
             var otherProxy = hair.GetComponentsInChildren<ModularAvatarBoneProxy>(true)
-                .FirstOrDefault(proxy => proxy.transform != hairHead);
+                .FirstOrDefault(proxy => !attached.Contains(proxy.transform));
 
             if (otherProxy != null)
             {
@@ -188,21 +189,28 @@ namespace KOZ39.SetupHairForMA
             // Against the avatar root, not the hair: a hair the user scaled to fit keeps that
             // scale, and once Match Scale has scaled the bone it already matches the head, which
             // would turn Match Scale off on a rerun.
-            AttachToHead(
-                hairHead,
+            var matchScale =
                 avatarHead.AverageLossyScale() / avatar.transform.AverageLossyScale()
-                    < MatchScaleThreshold
-            );
+                < MatchScaleThreshold;
+
+            AttachTo(hairHead, HumanBodyBones.Head, matchScale);
+
+            foreach (var collider in colliders)
+            {
+                var part = HairColliders.FindBodyPart(
+                    avatar,
+                    collider.GetComponent<VRCPhysBoneCollider>()
+                );
+
+                AttachTo(collider, part, matchScale && part == HumanBodyBones.Head);
+            }
 
             if (SetupHairForMASettings.AutoAddColliders)
             {
                 AddColliders(hair, avatar);
             }
 
-            var unattachedNames = bones
-                .Where(bone => bone != hairHead)
-                .Select(bone => bone.name)
-                .ToArray();
+            var unattachedNames = bones.Except(attached).Select(bone => bone.name).ToArray();
 
             return unattachedNames.Length == 0
                 ? null
@@ -253,23 +261,23 @@ namespace KOZ39.SetupHairForMA
             return bones.Length == 1 ? bones[0] : null;
         }
 
-        private static void AttachToHead(Transform hairHead, bool matchScale)
+        private static void AttachTo(Transform bone, HumanBodyBones target, bool matchScale)
         {
             // Not on the armature: Match Scale scales around the proxy's origin, and the armature's
             // origin sits at the avatar's feet, so the whole hair would sink.
-            var proxy = hairHead.GetComponent<ModularAvatarBoneProxy>();
+            var proxy = bone.GetComponent<ModularAvatarBoneProxy>();
 
             if (proxy == null)
             {
-                proxy = Undo.AddComponent<ModularAvatarBoneProxy>(hairHead.gameObject);
+                proxy = Undo.AddComponent<ModularAvatarBoneProxy>(bone.gameObject);
             }
             else
             {
                 Undo.RecordObject(proxy, MenuName);
             }
 
-            // Other modes snap the bone onto the avatar's head, shifting hair already in place.
-            proxy.boneReference = HumanBodyBones.Head;
+            // Other modes snap the bone onto the avatar's bone, shifting hair already in place.
+            proxy.boneReference = target;
             proxy.subPath = null;
             proxy.attachmentMode = BoneProxyAttachmentMode.AsChildKeepWorldPose;
             proxy.matchScale = matchScale;
