@@ -271,58 +271,68 @@ namespace KOZ39.SetupHairForMA
             internal static Strands Of(VRCPhysBone physBone)
             {
                 var root = physBone.GetRootTransform();
-                var ignored = physBone.ignoreTransforms.Where(bone => bone != null).ToArray();
+                var ignored = physBone
+                    .ignoreTransforms.Where(bone => bone != null)
+                    .SelectMany(bone => bone.GetComponentsInChildren<Transform>(true))
+                    .ToHashSet();
+                var rootChildren = MovingChildren(root, ignored);
+                var starts =
+                    rootChildren.Length > 0 ? rootChildren
+                    : ignored.Contains(root) ? Array.Empty<Transform>()
+                    : new[] { root };
+                var padding = physBone.radius * root.AverageLossyScale();
+                var bones = new List<Vector3>();
+                var branches = new List<(float Reach, Vector3 Hang)>();
 
-                Transform[] MovingChildren(Transform bone) =>
-                    bone.Cast<Transform>().Where(child => !ignored.Any(child.IsChildOf)).ToArray();
+                foreach (var start in starts)
+                {
+                    var chain = new List<Transform>();
+                    var endpoints = new List<Vector3>();
+                    Collect(start, ignored, physBone.endpointPosition, chain, endpoints);
+                    var toTip = chain
+                        .Select(bone => bone.position)
+                        .Concat(endpoints)
+                        .Select(point => point - root.position)
+                        .OrderByDescending(toPoint => toPoint.magnitude)
+                        .First();
 
-                IEnumerable<Transform> Chain(Transform bone) =>
-                    MovingChildren(bone).SelectMany(Chain).Prepend(bone);
+                    if (toTip.magnitude < MinStrandLength)
+                    {
+                        continue;
+                    }
+
+                    bones.AddRange(chain.Where(bone => bone != root).Select(bone => bone.position));
+                    branches.Add((toTip.magnitude + padding, toTip.normalized));
+                }
+
+                return new Strands(root.position, bones.ToArray(), branches.ToArray());
+            }
+
+            private static void Collect(
+                Transform bone,
+                HashSet<Transform> ignored,
+                Vector3 endpointPosition,
+                List<Transform> chain,
+                List<Vector3> endpoints
+            )
+            {
+                chain.Add(bone);
+                var children = MovingChildren(bone, ignored);
 
                 // PhysBone adds a bone at endpointPosition past the last bone of each chain.
-                IEnumerable<Vector3> Endpoints(IEnumerable<Transform> chain) =>
-                    physBone.endpointPosition == Vector3.zero
-                        ? Enumerable.Empty<Vector3>()
-                        : chain
-                            .Where(bone => MovingChildren(bone).Length == 0)
-                            .Select(bone => bone.TransformPoint(physBone.endpointPosition));
+                if (children.Length == 0 && endpointPosition != Vector3.zero)
+                {
+                    endpoints.Add(bone.TransformPoint(endpointPosition));
+                }
 
-                var rootChildren = MovingChildren(root);
-
-                var chains =
-                    rootChildren.Length > 0 ? rootChildren.Select(child => Chain(child).ToArray())
-                    : ignored.Any(root.IsChildOf) ? Array.Empty<Transform[]>()
-                    : new[] { new[] { root } };
-                var padding = physBone.radius * root.AverageLossyScale();
-                var branches = chains
-                    .Select(chain =>
-                        (
-                            Bones: chain,
-                            ToTip: chain
-                                .Select(bone => bone.position)
-                                .Concat(Endpoints(chain))
-                                .Select(point => point - root.position)
-                                .OrderByDescending(toPoint => toPoint.magnitude)
-                                .First()
-                        )
-                    )
-                    .Where(branch => branch.ToTip.magnitude >= MinStrandLength)
-                    .ToArray();
-
-                return new Strands(
-                    root.position,
-                    branches
-                        .SelectMany(branch => branch.Bones)
-                        .Where(bone => bone != root)
-                        .Select(bone => bone.position)
-                        .ToArray(),
-                    branches
-                        .Select(branch =>
-                            (branch.ToTip.magnitude + padding, branch.ToTip.normalized)
-                        )
-                        .ToArray()
-                );
+                foreach (var child in children)
+                {
+                    Collect(child, ignored, endpointPosition, chain, endpoints);
+                }
             }
+
+            private static Transform[] MovingChildren(Transform bone, HashSet<Transform> ignored) =>
+                bone.Cast<Transform>().Where(child => !ignored.Contains(child)).ToArray();
         }
     }
 }
