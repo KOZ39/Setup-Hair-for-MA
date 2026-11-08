@@ -33,7 +33,7 @@
 1. ヒエラルキーでアバターのルートを右クリックし、Modular Avatar > Setup Mesh Settings を選択します。
 2. アバターのルートにMA Mesh Settingsが追加され、Anchor OverrideとBoundsの設定モードがどちらも「設定」になります。
    - Anchor Overrideとルートボーンは、アバターのルート直下にあるBodyメッシュの値を使用します。Bodyメッシュがないか値が空の場合はHipsを使用します。
-   - Boundsは、ルートボーンをBodyから取得した場合はBodyメッシュの値を使用し、それ以外ではExtentsが1のデフォルト値のままになります。
+   - Boundsは、ルートボーンをBodyから取得し、BodyメッシュのExtentsがすべて1以上の場合はBodyメッシュの値を使用し、それ以外ではExtentsが1のデフォルト値のままになります。
    - すでにMA Mesh Settingsがあるアバターはスキップします。
 
 ## 注意事項

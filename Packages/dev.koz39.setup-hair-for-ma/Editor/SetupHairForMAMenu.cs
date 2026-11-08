@@ -26,6 +26,8 @@ namespace KOZ39.SetupHairForMA
         // Not 1, so float error in an unscaled head doesn't turn on Match Scale.
         private const float MatchScaleThreshold = 0.99f;
 
+        private const float MinBodyBoundsExtent = 1f;
+
         private static readonly string[] _headBoneNames = { "Head", "Hair" };
 
         [MenuItem(MenuPath, true, MenuPriority)]
@@ -332,7 +334,12 @@ namespace KOZ39.SetupHairForMA
             settings.InheritBounds = ModularAvatarMeshSettings.InheritMode.Set;
             settings.RootBone = new((rootBone != null ? rootBone : hips).gameObject);
 
-            if (rootBone != null)
+            var extents = body != null ? body.localBounds.extents : Vector3.zero;
+
+            if (
+                rootBone != null
+                && Mathf.Min(extents.x, extents.y, extents.z) >= MinBodyBoundsExtent
+            )
             {
                 settings.Bounds = body.localBounds;
             }

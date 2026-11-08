@@ -33,7 +33,7 @@ Click "Add to VCC" on the [VPM listing](https://koz39.github.io/vpm-listing/) to
 1. Right-click the avatar root in the Hierarchy and select Modular Avatar > Setup Mesh Settings.
 2. MA Mesh Settings is added to the avatar root, with both Anchor Override Mode and Bounds Override Mode set to "Set".
    - Anchor Override and Root Bone take the values of the Body mesh directly under the avatar root. Hips is used if there is no Body mesh or a value is empty.
-   - Bounds take the Body mesh's value when Root Bone comes from Body, and otherwise keep the default extents of 1.
+   - Bounds take the Body mesh's value when Root Bone comes from Body and all of the Body mesh's extents are at least 1, and otherwise keep the default extents of 1.
    - Avatars that already have MA Mesh Settings are skipped.
 
 ## Notes

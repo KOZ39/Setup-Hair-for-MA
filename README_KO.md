@@ -33,7 +33,7 @@
 1. 하이어라키에서 아바타 루트를 우클릭하고 Modular Avatar > Setup Mesh Settings를 선택합니다.
 2. 아바타 루트에 MA Mesh Settings가 추가되고, Anchor Override 모드와 Bounds 설정 모드가 모두 "설정"이 됩니다.
    - Anchor Override와 루트 본은 아바타 루트 바로 아래 Body 메시의 값을 사용합니다. Body 메시가 없거나 값이 비어 있으면 Hips를 사용합니다.
-   - Bounds는 루트 본을 Body에서 가져오면 Body 메시의 값을 사용하고, 그 외에는 Extents가 1인 기본값을 유지합니다.
+   - Bounds는 루트 본을 Body에서 가져오고 Body 메시의 Extents가 모두 1 이상이면 Body 메시의 값을 사용하며, 그 외에는 Extents가 1인 기본값을 유지합니다.
    - MA Mesh Settings가 이미 있는 아바타는 건너뜁니다.
 
 ## 주의 사항

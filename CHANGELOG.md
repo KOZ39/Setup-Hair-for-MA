@@ -1,5 +1,12 @@
 # 변경 내역
 
+## Unreleased
+
+### Changed
+
+- Setup Mesh Settings의 Bounds
+  - Body 메시의 Extents 중 1 미만인 값이 있을 시 기본값 유지
+
 ## v0.4.0 (2026-11-07)
 
 ### Changed
